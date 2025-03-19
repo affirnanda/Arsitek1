@@ -21,7 +21,7 @@ public class ProductDAO {
                 ResultSet rs = stmt.executeQuery(sql)) {
             // System.out.println("ResultSet rs " + rs);
             while (rs.next()) {
-                products.add(new Product(rs.getInt("id"), rs.getString("name"), rs.getDouble("Price")));
+                products.add(new Product(rs.getInt("id"), rs.getString("name"), rs.getDouble("price")));
             }
 
         } catch (SQLException e) {
@@ -30,5 +30,59 @@ public class ProductDAO {
         }
         return products;
     }
+
+
+    public int addProduct(Product product) {
+        int resultcount = 0;
+        String query = "INSERT INTO product (name, price) VALUES ("
+                + "'" + product.getName() + "' "
+                + ", " + product.getPrice() + ") ";
+        Statement stmnt;
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            stmnt = conn.createStatement();
+            resultcount = stmnt.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            resultcount = -1;
+        }
+        return resultcount;
+    }
+
+    public int updateProduct(Product product) {
+        int resultcount = 0;
+        String query = "UPDATE product SET"
+                + " name ='" + product.getName() + "' "
+                + ", price=" + product.getPrice() + " "
+                + "WHERE id=" + product.getId();
+        Statement stmnt;
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            stmnt = conn.createStatement();
+            resultcount = stmnt.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            resultcount = -1;
+        }
+        return resultcount;
+    }
+
+    public int deleteProduct(int productId) {
+        int resultcount = 0;
+        String query = "DELETE FROM product where id=" + productId;
+        Statement stmnt;
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            stmnt = conn.createStatement();
+            resultcount = stmnt.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            resultcount = -1;
+        }
+        return resultcount;
+    }
+
+
+  
+
+
+
 
 }

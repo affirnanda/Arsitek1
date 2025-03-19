@@ -32,7 +32,7 @@ public class Product {
     }
     
     public void setPrice(Double price) {
-        Price = price;
+        this.Price = price;
     }
 
 }
